@@ -215,13 +215,29 @@ if (isset($_POST['btnannesi'])) {
         </tr>';
 
         foreach ($rows as $row) {
+            
+            echo
+            '<div class="col-lg-4">
+            <div class="card mt-3" style="width: 18rem;">
+                <img src="images/background.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Kemal Atatürk ve '. $row["baslik"] . '</h5>
+                    <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Annesi Ne Kadar
+                        Önemlidir.</p>
+                    <form method="POST">
+                        <button type="submit" name="btn'. $row["baslik"] . '" class="btn btn-primary">Devamını Oku...</button>
+                    </form>
+                </div>
+            </div>
+        </div>';
+            /*
             echo "<tr>";
             echo "<td>".$row['id']."</td>";
             echo "<td>".$row['yas']."</td>";
             echo "<td>".$row['baslik']."</td>";
             echo "<td>".$row['icerik']."</td>";
             echo "<td>".$row['giris_saat']."</td>";
-            echo "</tr>";
+            echo "</tr>";*/
         }
         echo "</table>";
     } else {
