@@ -1,61 +1,23 @@
 <?php
 include "../partical/navbar.php";
-/*
-function yaz($secim, $baslik)
-{
-    //$bslk = $_POST['baslik'];
-    $icrk = $_POST['icerik'];
+include ("conn.php");
 
-    $dosya = '../'.$secim.' /metinler/'.$secim.'_'.$baslik.'_baslik.txt';
-    $dosya_ac = fopen($dosya, 'w');
-    fwrite($dosya_ac, $baslik);
-    fclose($dosya_ac);
+if ($_POST) {
 
-    $dosya1 = '../'.$secim.' /metinler/'.$secim.'_'.$baslik.'_icerik.txt';
-    $dosya_ac1 = fopen($dosya1, 'w');
-    fwrite($dosya_ac1, $icrk);
-    fclose($dosya_ac1);
-    header("location: admin.php");     
-}*/
+    $baslik = $_POST["baslik"];
+    $yas = $_POST["secim"];
+    $icerik = $_POST["icerik"];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $query = $db->prepare("SELECT yas, baslik FROM tubitak_table WHERE yas=? AND baslik IN (SELECT baslik FROM tubitak_table WHERE baslik=?)");
+    $query->execute(array($yas, $baslik));
 
-    $secim = $_POST['secim'];
-    $baslik = $_POST['baslik'];
-    $icrk = $_POST['icerik'];
-
-    if ($secim == "ortayaş") {
-
-        $dosya1 = '../ortayas/metinler/'. $baslik .'_baslik.txt';
-        $dosya_ac1 = fopen($dosya1, 'w');
-        fwrite($dosya_ac1, $baslik);
-        fclose($dosya_ac1);
-        header("location: admin.php");
-
-
-        $dosya1 = '../ortayas/metinler/'. $baslik .'_icerik.txt';
-        $dosya_ac1 = fopen($dosya1, 'w');
-        fwrite($dosya_ac1, $icrk);
-        fclose($dosya_ac1);
-        header("location: admin.php");
+    if ($query->rowCount() > 0) {
+        echo "Daha önce aynı başlık ve yaşta bir kayıt bulunmaktadır.";
+    } else {
+        $sql = $db->prepare("INSERT INTO tubitak_table SET baslik=?, yas=?, icerik=?");
+        $sql->execute(array($baslik, $yas, $icerik));
+        echo "Kayıt başarıyla eklendi.";
     }
-
-    if ($secim == "yaşlı") {
-
-        $dosya1 = '../yasli/metinler/'. $baslik .'_baslik.txt';
-        $dosya_ac1 = fopen($dosya1, 'w');
-        fwrite($dosya_ac1, $baslik);
-        fclose($dosya_ac1);
-        header("location: admin.php");
-
-
-        $dosya1 = '../yasli/metinler/'. $baslik .'_icerik.txt';
-        $dosya_ac1 = fopen($dosya1, 'w');
-        fwrite($dosya_ac1, $icrk);
-        fclose($dosya_ac1);
-        header("location: admin.php");
-    }
-
 
 }
 
