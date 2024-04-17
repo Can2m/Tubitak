@@ -1,16 +1,18 @@
 <?php
 
-function ac($acil, $baslik)
+include ("../admin/conn.php");
+
+function ac($baslik)
 {
     include "../partical/../partical/navbar.php";
 
-    $content = explode("n", file_get_contents("metinler/".$acil."_".$baslik."_baslik.txt"));
+    $content = explode("_", file_get_contents("metinler/" . $baslik . "_baslik.txt"));
     $content = implode($content);
 
     session_start();
     $_SESSION['veri'] = $content;
 
-    $content = explode("n", file_get_contents("metinler/".$acil."_".$baslik."_icerik.txt"));
+    $content = explode("_", file_get_contents("metinler/" . $baslik . "_icerik.txt"));
     $content = implode($content);
 
     session_start();
@@ -22,36 +24,29 @@ function ac($acil, $baslik)
 }
 
 if (isset($_POST['btndoga'])) {
-    $acil = "ortayaş";
-    $baslik = "doğa";
-    ac($acil, $baslik);
+    $baslik = "Doğa";
+    ac($baslik);
 }
 
 if (isset($_POST['btnsofra'])) {
-    $acil = "ortayaş";
-    $baslik = "sofra";
-    ac($acil, $baslik);
+    $baslik = "Sofra";
+    ac($baslik);
 }
 
 if (isset($_POST['btnsanat'])) {
-    $acil = "ortayaş";
-    $baslik = "sanat";
-    ac($acil, $baslik);
+    $baslik = "Sanat";
+    ac($baslik);
 }
 
 if (isset($_POST['btnkitap'])) {
-    $acil = "ortayaş";
-    $baslik = "kitap";
-    ac($acil, $baslik);
+    $baslik = "Kitap";
+    ac($baslik);
 }
 
 if (isset($_POST['btnannesi'])) {
-    $acil = "ortayaş";
-    $baslik = "annesi";
-    ac($acil, $baslik);
+    $baslik = "Annesi";
+    ac($baslik);
 }
-
-
 
 ?>
 
@@ -115,86 +110,41 @@ if (isset($_POST['btnannesi'])) {
 
 
     <div class="sec">
-        <h1>Şimdi Seçim Zamanı</h1>
-        <hr>
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="card m-5" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Doğa</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Doğa Adetlleri Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btndoga" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
+        <?php
+
+        $cocuk = "cocuk";
+        $sql = $db->prepare("SELECT id, yas, baslik, icerik, giris_saat FROM tubitak_table WHERE yas = :cocuk");
+        $sql->execute(array(':cocuk' => $cocuk));
+
+        $rows = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($rows) {
+
+            foreach ($rows as $row) {
+
+                echo
+                    '<div class="col-lg-0">
+            <div class="card mt-3" style="width: 18rem;">
+                <img src="images/background.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Kemal Atatürk ve ' . $row["baslik"] . '</h5>
+                    <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Annesi Ne Kadar
+                        Önemlidir.</p>
+                    <form method="POST">
+                        <button type="submit" name="btn' . $row["baslik"] . '" class="btn btn-primary">Devamını Oku...</button>
+                    </form>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="card m-5" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Sofra</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Sofra Adetlleri Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btnsofra" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card m-5" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Sanat</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve sanat Adetlleri Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btnsanat" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div>';
 
-        <div class="row">
+            }
 
-            <div class="col-lg-1"></div>
+        } else {
+            echo "Metin Girişi Yapılmamıştır.";
 
-            <div class="col-lg-4 m-3">
-                <div class="card m-5" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Kitap</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Kitap Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btnkitap" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 m-3">
-                <div class="card m-5" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Annesi</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Annesi Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btnannesi" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-2"></div>
-
+        }
+        ?>
     </div>
-
 
     <?php
     include "../partical/footer.php";

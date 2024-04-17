@@ -77,8 +77,8 @@
             <form method="post" action="adminback.php">
                 <select name="secim" class="form-select mb-3" aria-label="Default select example">
                     <option value="cocuk">çocuk</option>
-                    <option value="ortayaş">orta yaş</option>
-                    <option value="yaşlı">yaşlı</option>
+                    <option value="ortayas">orta yaş</option>
+                    <option value="yasli">yaşlı</option>
                 </select>
 
 

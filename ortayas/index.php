@@ -107,143 +107,42 @@ if (isset($_POST['btnannesi'])) {
         </div>
     </div>
 
-    <!--  
 
-    <div class="sec">
-        <h1>Şimdi Seçim Zamanı</h1>
-        <hr>
-        <div class="row row-card">
-            <div class="col-lg-4">
-                <div class="card mt-3" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Doğa</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Doğa Adetlleri Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btndoga" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card mt-3" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Sofra</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Sofra Adetlleri Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btnsofra" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card mt-3" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Sanat</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve sanat Adetlleri Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btnsanat" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row" style="margin-top:50px;">
-
-
-            <div class="col-lg-4 mt-3">
-                <div class="card" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Kitap</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Kitap Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btnkitap" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2"></div>
-
-            <div class="col-lg-4">
-                <div class="card mt-3" style="width: 18rem;">
-                    <img src="images/background.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Kemal Atatürk ve Annesi</h5>
-                        <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Annesi Ne Kadar
-                            Önemlidir.</p>
-                        <form method="POST">
-                            <button type="submit" name="btnannesi" class="btn btn-primary">Devamını Oku...</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-1"></div>
-
-    </div>
--->
 
     <div class="sec">
         <?php
 
-        $cocuk = "cocuk";
-    // Sorguyu hazırlama ve çalıştırma
-    $sql = $db->prepare("SELECT id, yas, baslik, icerik, giris_saat FROM tubitak_table WHERE yas = :cocuk");
-    $sql->execute(array(':cocuk' => $cocuk));
-    
-    // Tüm satırları al
-    $rows = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $ortayas = "ortayas";
+        $sql = $db->prepare("SELECT id, yas, baslik, icerik, giris_saat FROM tubitak_table WHERE yas = :ortayas");
+        $sql->execute(array(':ortayas' => $ortayas));
 
-    // Verileri tablo olarak gösterme
-    if ($rows) {
-        echo '<table border="1" class="table">
-        <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Yaş</th>
-        <th scope="col">Başlık</th>
-        <th scope="col">İçerik</th>
-        <th scope="col">Giriş Saati</th>
-        </tr>';
+        $rows = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($rows as $row) {
-            
-            echo
-            '<div class="col-lg-4">
+        if ($rows) {
+
+            foreach ($rows as $row) {
+
+                echo
+                    '<div class="col-lg-4">
             <div class="card mt-3" style="width: 18rem;">
                 <img src="images/background.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">Kemal Atatürk ve '. $row["baslik"] . '</h5>
+                    <h5 class="card-title">Kemal Atatürk ve ' . $row["baslik"] . '</h5>
                     <p class="card-text" style="font-weight: 300;">Mustafa Kemal ve Annesi Ne Kadar
                         Önemlidir.</p>
                     <form method="POST">
-                        <button type="submit" name="btn'. $row["baslik"] . '" class="btn btn-primary">Devamını Oku...</button>
+                        <button type="submit" name="btn' . $row["baslik"] . '" class="btn btn-primary">Devamını Oku...</button>
                     </form>
                 </div>
             </div>
         </div>';
-            /*
-            echo "<tr>";
-            echo "<td>".$row['id']."</td>";
-            echo "<td>".$row['yas']."</td>";
-            echo "<td>".$row['baslik']."</td>";
-            echo "<td>".$row['icerik']."</td>";
-            echo "<td>".$row['giris_saat']."</td>";
-            echo "</tr>";*/
+
+            }
+
+        } else {
+            echo "Metin Girişi Yapılmamıştır.";
+
         }
-        echo "</table>";
-    } else {
-        echo "Tabloda veri bulunamadı.";
-    
-        } 
         ?>
     </div>
 
