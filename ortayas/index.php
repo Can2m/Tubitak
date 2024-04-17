@@ -1,16 +1,18 @@
 <?php
 
+include ("../admin/conn.php");
+
 function ac($baslik)
 {
     include "../partical/../partical/navbar.php";
 
-    $content = explode("_", file_get_contents("metinler/".$baslik."_baslik.txt"));
+    $content = explode("_", file_get_contents("metinler/" . $baslik . "_baslik.txt"));
     $content = implode($content);
 
     session_start();
     $_SESSION['veri'] = $content;
 
-    $content = explode("_", file_get_contents("metinler/".$baslik."_icerik.txt"));
+    $content = explode("_", file_get_contents("metinler/" . $baslik . "_icerik.txt"));
     $content = implode($content);
 
     session_start();
@@ -105,7 +107,7 @@ if (isset($_POST['btnannesi'])) {
         </div>
     </div>
 
-
+    <!--  
 
     <div class="sec">
         <h1>Şimdi Seçim Zamanı</h1>
@@ -188,7 +190,46 @@ if (isset($_POST['btnannesi'])) {
         <div class="col-lg-1"></div>
 
     </div>
+-->
 
+    <div class="sec">
+        <?php
+
+        $cocuk = "cocuk";
+    // Sorguyu hazırlama ve çalıştırma
+    $sql = $db->prepare("SELECT id, yas, baslik, icerik, giris_saat FROM tubitak_table WHERE yas = :cocuk");
+    $sql->execute(array(':cocuk' => $cocuk));
+    
+    // Tüm satırları al
+    $rows = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+    // Verileri tablo olarak gösterme
+    if ($rows) {
+        echo '<table border="1" class="table">
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Yaş</th>
+        <th scope="col">Başlık</th>
+        <th scope="col">İçerik</th>
+        <th scope="col">Giriş Saati</th>
+        </tr>';
+
+        foreach ($rows as $row) {
+            echo "<tr>";
+            echo "<td>".$row['id']."</td>";
+            echo "<td>".$row['yas']."</td>";
+            echo "<td>".$row['baslik']."</td>";
+            echo "<td>".$row['icerik']."</td>";
+            echo "<td>".$row['giris_saat']."</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "Tabloda veri bulunamadı.";
+    
+        } 
+        ?>
+    </div>
 
     <?php
     include "../partical/footer.php";

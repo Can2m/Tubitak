@@ -12,11 +12,16 @@ if ($_POST) {
     $query->execute(array($yas, $baslik));
 
     if ($query->rowCount() > 0) {
-        echo "Daha önce aynı başlık ve yaşta bir kayıt bulunmaktadır.";
+        /*print ('<div class="alert alert-dark" role="alert">
+        Daha önce aynı başlık ve yaşta bir kayıt bulunmaktadır.
+        </div>');
+*/
+        header("location: admin.php");
     } else {
         $sql = $db->prepare("INSERT INTO tubitak_table SET baslik=?, yas=?, icerik=?");
         $sql->execute(array($baslik, $yas, $icerik));
-        echo "Kayıt başarıyla eklendi.";
+        header("location: admin.php");
+        //echo "Kayıt başarıyla eklendi.";
     }
 
 }
